@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.2)
 
 project(libnfs
         LANGUAGES C
-        VERSION 3.0.0)
+        VERSION 4.0.0)
 
 add_library(nfs
   lib/init.c

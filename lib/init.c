@@ -83,7 +83,7 @@ struct rpc_context *rpc_init_context(void)
 	}
 	// Add PID to rpc->xid for easier debugging, making sure to cast
 	// pid to 32-bit type to avoid invalid left-shifts.
-	rpc->xid = salt + rpc_current_time() + ((uint32_t)getpid() << 16);
+	rpc->xid = salt + (uint32_t)rpc_current_time() + ((uint32_t)getpid() << 16);
 	salt += 0x01000000;
 	rpc->fd = -1;
 	rpc->tcp_syncnt = RPC_PARAM_UNDEFINED;
@@ -261,7 +261,7 @@ char *rpc_get_error(struct rpc_context *rpc)
 {
 	assert(rpc->magic == RPC_CONTEXT_MAGIC);
 
-	return rpc->error_string;
+	return rpc->error_string ? rpc->error_string : "";
 }
 
 static void rpc_purge_all_pdus(struct rpc_context *rpc, int status, const char *error)

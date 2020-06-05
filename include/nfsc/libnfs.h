@@ -38,6 +38,8 @@ extern "C" {
 #define LIBNFS_FEATURE_READAHEAD
 #define LIBNFS_FEATURE_PAGECACHE
 #define LIBNFS_FEATURE_DEBUG
+#define LIBNFS_FEATURE_UMOUNT
+
 #define NFS_BLKSIZE 4096
 #define NFS_PAGECACHE_DEFAULT_TTL 5
 
@@ -50,7 +52,7 @@ struct nfs_url {
 	char *file;
 };
 
-#if defined(WIN32)
+#if defined(WIN32) && defined(libnfs_EXPORTS)
 #define EXTERN __declspec( dllexport )
 #else
 #ifndef EXTERN
@@ -1901,6 +1903,16 @@ EXTERN int mount_getexports_async(struct rpc_context *rpc, const char *server,
  * returned data must be freed by calling mount_free_export_list(exportnode);
  */
 EXTERN struct exportnode *mount_getexports(const char *server);
+
+/*
+ * Sync getexports_timeout(<server>, <timeout>)
+ * Function returns
+ *            NULL : something failed
+ *  exports export : a linked list of exported directories
+ *
+ * returned data must be freed by calling mount_free_export_list(exportnode);
+ */
+EXTERN struct exportnode *mount_getexports_timeout(const char *server, int timeout);
 
 EXTERN void mount_free_export_list(struct exportnode *exports);
 
